@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:untitledapp2/dashboard.dart';
 import 'package:untitledapp2/list_view.dart';
+import 'package:untitledapp2/login.dart';
 import 'package:untitledapp2/splash.dart';
 import 'package:untitledapp2/topPicks.dart';
 import 'package:untitledapp2/utils/firebase_default_options.dart';
@@ -36,6 +37,7 @@ void main() {
       '/dashboard':(context)=>Dashboard(),
       '/listViewScreen': (context)=> ListViewScreen(),
       '/topPicks': (context)=> TopPicks(),
+      '/login': (context)=> Login(),
     } ,
     debugShowCheckedModeBanner: false,
   ));
