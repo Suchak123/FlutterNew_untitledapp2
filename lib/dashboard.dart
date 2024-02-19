@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitledapp2/service/base_auth_service.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -7,9 +8,47 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Top Picks'),
+        title: Text('Dashboard'),
         actions: [
-          Icon(Icons.plus_one),
+          GestureDetector(
+
+            onTap: (){
+              showDialog (context: context, builder: (BuildContext dialogContext){
+                  return AlertDialog(
+                  icon: Icon(Icons.warning),
+                  title: Text('Signout'),
+                  content: Text("Are you sure you want to signout?"),
+                  actions: [
+                    InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: Text('Ok'),
+                        ),
+
+                      onTap: (){
+                        final firebaseAuthService = FirebaseAuthService();
+                        firebaseAuthService.signout();
+                        Navigator.of(context).pushReplacementNamed('/login');
+                      },
+                    ),
+
+                    InkWell(
+                        child: Text('Cancel'),
+                      onTap: (){
+                          Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              });
+
+            },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Icon(Icons.logout),
+              ),
+
+          ),
         ],
       ),
       body: Center(
@@ -30,8 +69,8 @@ class Dashboard extends StatelessWidget {
     
 
 
-    Widget buildBasicCard(BuildContext context){
+    // Widget buildBasicCard(BuildContext context){
 
     }
   }
-}
+

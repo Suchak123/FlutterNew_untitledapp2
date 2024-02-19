@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:untitledapp2/dashboard.dart';
 import 'package:untitledapp2/list_view.dart';
 import 'package:untitledapp2/login.dart';
+import 'package:untitledapp2/register.dart';
 import 'package:untitledapp2/splash.dart';
 import 'package:untitledapp2/topPicks.dart';
 import 'package:untitledapp2/utils/firebase_default_options.dart';
@@ -38,6 +39,7 @@ void main() {
       '/listViewScreen': (context)=> ListViewScreen(),
       '/topPicks': (context)=> TopPicks(),
       '/login': (context)=> Login(),
+      '/register': (context)=> Register(),
     } ,
     debugShowCheckedModeBanner: false,
   ));
@@ -46,9 +48,9 @@ void main() {
 void initializeFirebase() async{
   await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
 
-  FirebaseAuth.instance.signInWithPhoneNumber('+9779841798250')
-      .then((value) => print('Login Screen $value'),)
-      .catchError((error) => print('Auth Error'));
+//   FirebaseAuth.instance.signInWithPhoneNumber('+9779841798250')
+//       .then((value) => print('Login Screen $value'),)
+//       .catchError((error) => print('Auth Error'));
 }
 
 class MyApp extends StatefulWidget {
