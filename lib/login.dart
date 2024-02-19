@@ -45,6 +45,7 @@ class Login extends StatelessWidget {
                         padding: const EdgeInsets.only(
                             top: 50.0, left: 20, right: 20),
                         child: Form(
+                          key: _formKey,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,10 +136,11 @@ class Login extends StatelessWidget {
                                     User? user = await firebaseAuthService
                                         .loginInWithEmailAndPassword(
                                         email, password);
-                                    ;
                                     if (user != null) {
                                       print('login success');
-                                      Navigator.pushNamed(context, "/main");
+                                      if(context.mounted){
+                                        Navigator.of(context).pushReplacementNamed('/dashboard');
+                                      }
                                     } else {
                                       print("login failed");
                                     }

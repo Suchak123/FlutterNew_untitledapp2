@@ -1,76 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:untitledapp2/service/base_auth_service.dart';
 
-class Dashboard extends StatelessWidget {
+import 'list_view.dart';
+import 'profile.dart';
+import 'topPicks.dart';
+
+class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+
+  int _currentIndex = 0;
+
+  final pages = [
+    TopPicks(),
+    ListViewScreen(),
+    Profile(),
+  ];
+  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
-        actions: [
-          GestureDetector(
 
-            onTap: (){
-              showDialog (context: context, builder: (BuildContext dialogContext){
-                  return AlertDialog(
-                  icon: Icon(Icons.warning),
-                  title: Text('Signout'),
-                  content: Text("Are you sure you want to signout?"),
-                  actions: [
-                    InkWell(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Text('Ok'),
-                        ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black,
+        onTap: (index){
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        currentIndex: _currentIndex,
 
-                      onTap: (){
-                        final firebaseAuthService = FirebaseAuthService();
-                        firebaseAuthService.signout();
-                        Navigator.of(context).pushReplacementNamed('/login');
-                      },
-                    ),
-
-                    InkWell(
-                        child: Text('Cancel'),
-                      onTap: (){
-                          Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              });
-
-            },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Icon(Icons.logout),
-              ),
-
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.holiday_village),
+              label: 'Dashboard'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.safety_check),
+              label: 'List View'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.important_devices),
+              label: 'Account'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_box),
+              label: 'Profile'
           ),
         ],
+
       ),
-      body: Center(
-        child: Stack(
-        children: <Widget>[
-          Container(
+      body: pages.elementAt(_currentIndex),
 
-            child: Image.asset('assets/images/imageluffy1.jpg', height: 400,width: MediaQuery.of(context).size.width),
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: Text('Luffy Bounty: 4,000,000,000 berries', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40, color: Colors.red),),
-          ),
-        ],
-        ),
-      ),
-      );
-    
-
-
-    // Widget buildBasicCard(BuildContext context){
-
-    }
+    );
   }
-
+}

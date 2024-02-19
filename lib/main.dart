@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:untitledapp2/dashboard.dart';
 import 'package:untitledapp2/list_view.dart';
 import 'package:untitledapp2/login.dart';
+import 'package:untitledapp2/profile.dart';
 import 'package:untitledapp2/register.dart';
 import 'package:untitledapp2/splash.dart';
 import 'package:untitledapp2/topPicks.dart';
@@ -40,6 +41,7 @@ void main() {
       '/topPicks': (context)=> TopPicks(),
       '/login': (context)=> Login(),
       '/register': (context)=> Register(),
+      '/profile': (context) => Profile(),
     } ,
     debugShowCheckedModeBanner: false,
   ));
@@ -63,44 +65,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
 
-  int _currentIndex = 0;
-
-  final pages = [
-    Dashboard(),
-    TopPicks(),
-    ListViewScreen()
-  ];
-  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index){
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        currentIndex: _currentIndex,
-
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.holiday_village),
-              label: 'Dashboard'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.holiday_village),
-              label: 'List View'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_box_sharp),
-              label: 'Account'
-          )
-        ],
-
-    ),
-    body: pages.elementAt(_currentIndex),
 
     );
 
