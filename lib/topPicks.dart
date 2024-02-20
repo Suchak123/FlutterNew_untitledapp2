@@ -7,7 +7,7 @@ class TopPicks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text('Top Picks'),
         backgroundColor: Colors.redAccent.withOpacity(0.5),

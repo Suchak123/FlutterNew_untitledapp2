@@ -37,20 +37,17 @@ class _DashboardState extends State<Dashboard> {
         currentIndex: _currentIndex,
 
         items: const [
+
           BottomNavigationBarItem(
-              icon: Icon(Icons.holiday_village),
-              label: 'Dashboard'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.safety_check),
+              icon: Icon(Icons.safety_check, color: Colors.white,),
               label: 'List View'
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.important_devices),
+              icon: Icon(Icons.important_devices, color: Colors.white),
               label: 'Account'
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_box),
+              icon: Icon(Icons.account_box, color: Colors.white),
               label: 'Profile'
           ),
         ],

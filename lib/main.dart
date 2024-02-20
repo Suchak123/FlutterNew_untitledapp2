@@ -26,11 +26,23 @@ void main() {
       useMaterial3: false,
       brightness: Brightness.light,
       fontFamily: 'BebasNeue',
+
     ),
     darkTheme: ThemeData(
-      colorSchemeSeed: Colors.yellow,
+      colorSchemeSeed: Colors.yellow.shade300,
       useMaterial3: false,
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
+      fontFamily: 'BebasNeue',
+      textTheme: TextTheme(
+        bodyMedium: TextStyle(
+          color: Colors.black
+        ),
+        bodyLarge: TextStyle(
+          color: Colors.black
+        ),
+
+      )
+
     ),
     routes:{
       '/':(BuildContext context)=>Splash(),
@@ -65,13 +77,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
     );
-
   }
 }
 
