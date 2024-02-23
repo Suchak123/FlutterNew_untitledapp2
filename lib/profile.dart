@@ -54,7 +54,7 @@ class Profile extends StatelessWidget {
         child: ElevatedButton(
           onPressed : () async{
             final firebaseDatabaseService = FirebaseDatabaseService();
-            firebaseDatabaseService.getUsers();
+            firebaseDatabaseService.getSingleUser();
           },
           child: Text('Get User Details'),
         ),
