@@ -1,20 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:untitledapp2/model/user_model.dart';
 import 'package:untitledapp2/service/base_auth_service.dart';
+import 'package:untitledapp2/service/firebase_database_service.dart';
 // import 'package:flutter_svg/svg.dart';
 
 class Register extends StatelessWidget {
   Register({super.key});
+  final _formKey= GlobalKey<FormState>(); //underscore : private
+  final _fullNameController=TextEditingController();
+  final _emailAddressController=TextEditingController();
+  final _phoneNumberController=TextEditingController();
+  final _passwordController=TextEditingController();
+  final _streetAddressController=TextEditingController();
+  final _emailRegexPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
 
-  final _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
-  final _emailAddressController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
-  final _streetAddressController = TextEditingController();
-  final _emailRegexPattern =
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +24,10 @@ class Register extends StatelessWidget {
       body: Center(
         child: Container(
           width: kIsWeb
-              ? MediaQuery.of(context).size.width / 1.5
+              ? MediaQuery.of(context).size.width / 1.25
               : MediaQuery.of(context).size.width,
           height: kIsWeb
-              ? MediaQuery.of(context).size.height / 1.5
+              ? MediaQuery.of(context).size.height / 1.25
               : MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             color: Colors.orangeAccent.withOpacity(0.5),
@@ -50,8 +51,9 @@ class Register extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            top: 30.0, left: 15, right: 15),
+                            top: 50.0, left: 20, right: 20),
                         child: Form(
+                          key: _formKey,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,12 +67,11 @@ class Register extends StatelessWidget {
                               ),
                               const SizedBox(height: 5),
                               GestureDetector(
-                                onTap: () =>
-                                    Navigator.of(context).pushNamed('/login'),
+                                onTap: ()=> Navigator.of(context).pushNamed('/login'),
                                 child: RichText(
                                   // textWidthBasis: TextWidthBasis.longestLine,
                                   text: TextSpan(
-                                    text: "Already have an account?",
+                                    text: "Already have a account?",
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.black.withOpacity(0.7),
@@ -81,35 +82,49 @@ class Register extends StatelessWidget {
                                           style: TextStyle(
                                               color: Colors.pink,
                                               decoration:
-                                                  TextDecoration.underline))
+                                              TextDecoration.underline))
                                     ],
                                   ),
                                 ),
                               ),
                               SizedBox(height: 10),
-
+                              TextFormField(
+                                controller: _fullNameController,
+                                keyboardType: TextInputType.name,
+                                maxLength: 30,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Enter full name',
+                                ),
+                                validator: (fullNameValue){
+                                  if (fullNameValue==null || fullNameValue.trim().isEmpty){
+                                    return 'Please Enter Full Name';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
                               TextFormField(
                                 controller: _emailAddressController,
                                 maxLength: 30,
-                                maxLines: 1, //lines or height of box
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Email address',
                                 ),
-                                validator: (emailValue) {
-                                  if (emailValue == null ||
-                                      emailValue.trim().isEmpty) {
+                                validator: (emailValue){
+                                  if (emailValue==null || emailValue.trim().isEmpty){
                                     return 'Please enter your email address';
                                   }
-                                  final regex = RegExp(_emailRegexPattern);
-                                  if (!regex.hasMatch(emailValue)) {
-                                    return 'Please enter a valid email';
+                                  final regex= RegExp(_emailRegexPattern);
+                                  if (!regex.hasMatch(emailValue)){
+                                    return'Please enter a valid email';
                                   }
                                   return null;
                                 },
                               ),
-
                               SizedBox(
                                 height: 5,
                               ),
@@ -121,92 +136,88 @@ class Register extends StatelessWidget {
                                   border: OutlineInputBorder(),
                                   labelText: 'Enter your phone number',
                                 ),
-                                validator: (phoneNumberValue) {
-                                  if (phoneNumberValue == null ||
-                                      phoneNumberValue.trim().isEmpty) {
+                                validator: (phoneNumberValue){
+                                  if (phoneNumberValue==null || phoneNumberValue.trim().isEmpty){
                                     return 'Please enter your phone number';
                                   }
                                   return null;
                                 },
                               ),
-
+                              SizedBox(
+                                height: 2.5,
+                              ),
                               TextFormField(
                                 controller: _passwordController,
-                                keyboardType: TextInputType.text,
-                                obscureText: true,
+                                keyboardType: TextInputType.visiblePassword,
+                                maxLength: 20,
+                                obscureText: true,  //making non visible password
                                 decoration: InputDecoration(
-                                  labelText: "Enter your password",
                                   border: OutlineInputBorder(),
-
-                                  // labelText: "email"
+                                  labelText: 'Enter your password',
                                 ),
-                                validator: (passwordValue) {
-                                  if (passwordValue == null ||
-                                      passwordValue.trim().isEmpty) {
+                                validator: (passwordValue){
+                                  if (passwordValue==null || passwordValue.trim().isEmpty){
                                     return 'Please Enter password';
                                   }
                                   return null;
                                 },
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              SizedBox(height: 2.5,),
                               TextFormField(
                                 controller: _streetAddressController,
                                 keyboardType: TextInputType.streetAddress,
-                                maxLength: 10,
-                                maxLines: 2, //lines or height of box
+                                maxLength: 20,
+                                maxLines: 1, //lines or height of box
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Enter your address',
                                 ),
-                                validator: (streetAddressValue) {
-                                  if (streetAddressValue == null ||
-                                      streetAddressValue.trim().isEmpty) {
+                                validator: (streetAddressValue){
+                                  if (streetAddressValue==null || streetAddressValue.trim().isEmpty){
                                     return 'Please Enter address';
                                   }
                                   return null;
                                 },
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 5),
                               Center(
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState != null) {
-                                      if (_formKey.currentState!.validate()) {
+                                  style: ElevatedButton.styleFrom(),
+                                  onPressed: ()async{
+                                    if (_formKey.currentState!= null){
+                                      if(_formKey.currentState!.validate()){
                                         _formKey.currentState!.save();
-                                        final email =
-                                            _emailAddressController.text;
-                                        final password =
-                                            _passwordController.text;
-                                        final firebaseAuth =
-                                            FirebaseAuthService();
-                                        firebaseAuth
-                                            .signUpUserWithEmailAndPassword(
-                                                email, password);
-                                        Navigator.pushNamed(context, '/login');
-                                        //print('The Enter First Name ${_fullNameController.text}');
-                                        //print('The email address is  ${_emailAddressController.text}');
-                                        //print('The Enter phone number ${_phoneNumberController.text}');
-                                        //print('The password is ${_passwordController.text}');
-                                        //print('The street address ${_streetAddressController.text}');
+                                        final email = _emailAddressController.text;
+                                        final password = _passwordController.text;
+                                        final firebaseAuth = FirebaseAuthService();
+                                        final user = await firebaseAuth.signUpUserWithEmailAndPassword(email, password);
+
+                                        if(user!=null){
+                                          final userModel = UserModel(
+                                            uId: user.uid,
+                                            fullName: _fullNameController.text,
+                                            emailAddress: _emailAddressController.text,
+                                            phoneNumber: int.parse(_phoneNumberController.text),
+                                            address: _streetAddressController.text,
+                                          );
+                                          final firebaseDatabaseService = FirebaseDatabaseService();
+                                          firebaseDatabaseService.createUserInCloudFirebase(userModel: userModel);
+                                          Navigator.pushNamed(context, '/login');
+
+                                        } else{
+                                          print('Databse couldnt be created');
+                                        }
                                       }
                                     }
+                                    // Navigator.pushNamed(context, '/main')
                                   },
                                   child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Text(
-                                      'Submit',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        50, 10, 50, 10),
+                                    child: Text("Register"),
                                   ),
-                                  // style: ElevatedButton.styleFrom(
-                                  //     backgroundColor: Colors.deepPurple),
                                 ),
-                              ),
+                              )
 
                               // RichText(text: "Do not have a account yet?")
                             ],
@@ -217,26 +228,27 @@ class Register extends StatelessWidget {
                   ),
                   kIsWeb
                       ? FractionallySizedBox(
-                          widthFactor: 0.5,
-                          child: Container(
-                            padding: EdgeInsets.all(30),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                              ),
-                              image: DecorationImage(
-                                image: AssetImage('images/imageluffy1.jpg'),
-                                // Replace with your image path
-                                fit: BoxFit
-                                    .cover, // You can adjust the fit property as needed
-                              ),
-                            ),
-                            width: constraints.maxWidth,
-                            height: constraints.maxHeight,
-                          ),
-                        )
+                    widthFactor: 0.5,
+                    child: Container(
+                      padding: EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.3),
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                        image: DecorationImage(
+                          image: AssetImage('images/imageluffy1.jpg'),
+                          // Replace with your image path
+                          fit: BoxFit
+                              .cover, // You can adjust the fit property as needed
+                        ),
+                      ),
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight,
+                      // child: SvgPicture.network('https://svgur.com/i/yCT.svg'),
+                    ),
+                  )
                       : SizedBox.shrink(),
                 ],
               );

@@ -9,6 +9,7 @@ class Login extends StatelessWidget {
   final _emailAddressController = TextEditingController();
   final _passwordController = TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,6 +138,7 @@ class Login extends StatelessWidget {
                                         .loginInWithEmailAndPassword(
                                         email, password);
                                     if (user != null) {
+                                      
                                       print('login success');
                                       if(context.mounted){
                                         Navigator.of(context).pushReplacementNamed('/dashboard');

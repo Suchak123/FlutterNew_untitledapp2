@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:untitledapp2/model/user_model.dart';
 
 class FirebaseDatabaseService{
   final usersList = [];
@@ -53,5 +52,17 @@ class FirebaseDatabaseService{
       throw e;
     }
 
+  }
+  //This function is used to create a user in Cloud Firebase
+  void createUserInCloudFirebase({required UserModel userModel})async{
+    try{
+      final CollectionReference _usersCollectionReference = await _firestoreDb.collection('users');
+
+      await _usersCollectionReference.add(userModel.toJson()).whenComplete(() {
+        print('User Created Success');
+      });
+    } catch(e){
+      print('Something went wrong $e');
+    }
   }
 }
