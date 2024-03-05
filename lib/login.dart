@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitledapp2/service/base_auth_service.dart';
 // import 'package:flutter_svg/svg.dart';
 
@@ -12,6 +13,9 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    _emailAddressController.text = "suchak@niraula.com";
+    _passwordController.text = "password";
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.4),
       body: Center(
@@ -138,7 +142,8 @@ class Login extends StatelessWidget {
                                         .loginInWithEmailAndPassword(
                                         email, password);
                                     if (user != null) {
-                                      
+                                      final SharedPreferences prefs = await SharedPreferences.getInstance();
+                                      prefs.setString('id', user.uid);
                                       print('login success');
                                       if(context.mounted){
                                         Navigator.of(context).pushReplacementNamed('/dashboard');
